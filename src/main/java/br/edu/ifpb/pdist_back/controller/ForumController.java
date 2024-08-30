@@ -52,7 +52,7 @@ public class ForumController {
     }
 
     @PutMapping(path = "/{id}")
-    public ResponseEntity<?> updateForum(@PathVariable String id, @RequestBody Forum forum) {
+    public ResponseEntity<?> updateForum(@PathVariable String id, @RequestBody ForumDTO forum) {
         try {
             return forumService.updateForum(id, forum);
         } catch (Exception e) {

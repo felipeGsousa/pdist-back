@@ -2,6 +2,7 @@ package br.edu.ifpb.pdist_back.service;
 
 import br.edu.ifpb.pdist_back.controller.CommentImpl;
 import br.edu.ifpb.pdist_back.dto.ForumDTO;
+import br.edu.ifpb.pdist_back.dto.PostDTO;
 import br.edu.ifpb.pdist_back.model.Comment;
 import br.edu.ifpb.pdist_back.model.Forum;
 import br.edu.ifpb.pdist_back.model.Post;
@@ -26,18 +27,23 @@ public class ForumService {
 
     public ResponseEntity<?> getAllForums() {
         List<Forum> forums = forumRepository.findAll();
-        return new ResponseEntity<>(forums, HttpStatus.OK);
+        List<ForumDTO> forumDTOS = forumsToDTO(forums);
+        return new ResponseEntity<>(forumDTOS, HttpStatus.OK);
     }
 
     public ResponseEntity<?> getForum(String id){
         Optional<Forum> forum = forumRepository.findById(id);
-        if (forum.isPresent()) return new ResponseEntity<>(forum.get(), HttpStatus.OK);
+        if (forum.isPresent()) {
+            ForumDTO forumDTO = forumToDTO(forum.get());
+            return new ResponseEntity<>(forumDTO, HttpStatus.OK);
+        }
         return new ResponseEntity<>("Forum not found", HttpStatus.NOT_FOUND);
     }
 
     public ResponseEntity<?> getUserForums(String id) {
         List<Forum> forums = forumRepository.findByUserId(id);
-        return new ResponseEntity<>(forums, HttpStatus.OK);
+        List<ForumDTO> forumDTOS = forumsToDTO(forums);
+        return new ResponseEntity<>(forumDTOS, HttpStatus.OK);
     }
 
     public ResponseEntity<?> deleteForum(String id){
@@ -55,12 +61,16 @@ public class ForumService {
         return new ResponseEntity<>("Forum not found", HttpStatus.NOT_FOUND);
     }
 
-    public ResponseEntity<?> updateForum(String id, Forum forumData) {
+    public ResponseEntity<?> updateForum(String id, ForumDTO forumData) {
         Optional<Forum> forum = forumRepository.findById(id);
         if (forum.isPresent()) {
+            byte[] banner = new byte[0];
+            if (forumData.getBanner() != "") {
+                banner = Base64.getDecoder().decode(forumData.getBanner());
+            }
             forum.get().setName(forumData.getName());
             forum.get().setTopic(forumData.getTopic());
-            forum.get().setBanner(forumData.getBanner());
+            forum.get().setBanner(banner);
             forum.get().setDescription(forumData.getDescription());
             forumRepository.save(forum.get());
             return new ResponseEntity<>("Forum has been updated", HttpStatus.OK);
@@ -70,7 +80,10 @@ public class ForumService {
 
     public ResponseEntity<?> addForum(ForumDTO forumData) {
         Forum forum = new Forum();
-        byte[] banner = Base64.getDecoder().decode(forumData.getBanner());
+        byte[] banner = new byte[0];
+        if (forumData.getBanner() != "") {
+            banner = Base64.getDecoder().decode(forumData.getBanner());
+        }
         forum.setName(forumData.getName());
         forum.setTopic(forumData.getTopic());
         forum.setBanner(banner);
@@ -81,9 +94,64 @@ public class ForumService {
         forum.setPosts(new ArrayList<>());
 
         forum.addUser(forum.getUserId());
-        System.out.println(banner.toString());
         Forum createdForum = forumRepository.save(forum);
+        ForumDTO dto = forumToDTO(createdForum);
 
-        return new ResponseEntity<>(createdForum, HttpStatus.CREATED);
+        return new ResponseEntity<>(dto ,HttpStatus.CREATED);
+    }
+
+    public ForumDTO forumToDTO(Forum forum) {
+        ForumDTO forumDTO = new ForumDTO();
+        forumDTO.setId(forum.getId());
+        forumDTO.setPosts(postsToDTO(forum.getPosts()));
+        forumDTO.setUsers(forum.getUsers());
+        forumDTO.setUserId(forum.getUserId());
+        forumDTO.setCreated(forum.getCreated());
+
+        if (forum.getBanner() != null && forum.getBanner().length > 0) {
+            forumDTO.setBanner(Base64.getEncoder().encodeToString(forum.getBanner()));
+        }
+
+        forumDTO.setDescription(forum.getDescription());
+        forumDTO.setName(forum.getName());
+        forumDTO.setTopic(forum.getTopic());
+        return forumDTO;
+    }
+    public List<ForumDTO> forumsToDTO(List<Forum> forums) {
+        List<ForumDTO> forumDTOS = new ArrayList<>();
+
+        for (Forum forum: forums) {
+            ForumDTO forumDTO = new ForumDTO();
+
+            forumDTO.setId(forum.getId());
+            forumDTO.setPosts(postsToDTO(forum.getPosts()));
+            forumDTO.setUsers(forum.getUsers());
+            forumDTO.setUserId(forum.getUserId());
+            forumDTO.setCreated(forum.getCreated());
+            if (forum.getBanner() != null && forum.getBanner().length > 0) {
+                forumDTO.setBanner(Base64.getEncoder().encodeToString(forum.getBanner()));
+            }
+            forumDTO.setDescription(forum.getDescription());
+            forumDTO.setName(forum.getName());
+            forumDTO.setTopic(forum.getTopic());
+            forumDTOS.add(forumDTO);
+        }
+        return forumDTOS;
+    }
+
+    public List<PostDTO> postsToDTO (List<Post> posts) {
+        List<PostDTO> postDTOS = new ArrayList<>();
+        for (Post post: posts) {
+            PostDTO postDTO = new PostDTO();
+
+            postDTO.setId(post.getId());
+            postDTO.setDate(post.getDate());
+            postDTO.setContent(post.getContent());
+            postDTO.setDislikes(postDTO.getDislikes());
+            postDTO.setLikes(postDTO.getLikes());
+
+            postDTOS.add(postDTO);
+        }
+        return postDTOS;
     }
 }

@@ -1,6 +1,7 @@
 package br.edu.ifpb.pdist_back.service;
 
 import br.edu.ifpb.pdist_back.controller.CommentImpl;
+import br.edu.ifpb.pdist_back.dto.PostDTO;
 import br.edu.ifpb.pdist_back.model.Comment;
 import br.edu.ifpb.pdist_back.model.Forum;
 import br.edu.ifpb.pdist_back.model.Post;
@@ -29,7 +30,8 @@ public class PostService {
 
     public ResponseEntity<?> getAllPosts() {
         List<Post> posts = postRepository.findAll();
-        return new ResponseEntity<>(posts, HttpStatus.OK);
+        List<PostDTO> postDTOS = postsToDTO(posts);
+        return new ResponseEntity<>(postDTOS, HttpStatus.OK);
     }
     public ResponseEntity<?> getPost(String id){
         Optional<Post> post = postRepository.findById(id);
@@ -39,7 +41,8 @@ public class PostService {
 
     public ResponseEntity<?> getUserPosts(String userId) {
         List<Post> posts = postRepository.findByUserId(userId);
-        return new ResponseEntity<>(posts, HttpStatus.OK);
+        List<PostDTO> postDTOS = postsToDTO(posts);
+        return new ResponseEntity<>(postDTOS, HttpStatus.OK);
     }
     public ResponseEntity<?> deletePost(String id) {
         Optional<Post> post = postRepository.findById(id);
@@ -65,7 +68,7 @@ public class PostService {
         return new ResponseEntity<>("Post not found", HttpStatus.NOT_FOUND);
     }
 
-    public ResponseEntity<?> addPost(String forumId, Post postData) {
+    public ResponseEntity<?> addPost(String forumId, PostDTO postData) {
         Optional<Forum> forum = forumRepository.findById(forumId);
         if (forum.isPresent()) {
             Post post = new Post();
@@ -75,17 +78,35 @@ public class PostService {
             post.setDate(new Date());
             post.setComments(new ArrayList<>());
             post.setUserId(postData.getUserId());
-            post.setFileId(postData.getFileId());
+            if (postData.getFileId() != "") {
+                post.setFileId(postData.getFileId());
+            }
+            post.setDislike(0L);
+            post.setLikes(0L);
 
             Post savedPost = postRepository.save(post);
 
             forum.get().addPost(savedPost);
 
             forumRepository.save(forum.get());
-            return new ResponseEntity<>("Post has been created", HttpStatus.OK);
+            return new ResponseEntity<>(savedPost, HttpStatus.OK);
         }
         return new ResponseEntity<>("Forum not found", HttpStatus.NOT_FOUND);
     }
 
-    //adicionar e remover comentários, adicionar ou remover conteudo escrito ou arquivo
+    public List<PostDTO> postsToDTO (List<Post> posts) {
+        List<PostDTO> postDTOS = new ArrayList<>();
+        for (Post post: posts) {
+            PostDTO postDTO = new PostDTO();
+
+            postDTO.setId(post.getId());
+            postDTO.setDate(post.getDate());
+            postDTO.setContent(post.getContent());
+            postDTO.setDislikes(postDTO.getDislikes());
+            postDTO.setLikes(postDTO.getLikes());
+
+            postDTOS.add(postDTO);
+        }
+        return postDTOS;
+    }
 }

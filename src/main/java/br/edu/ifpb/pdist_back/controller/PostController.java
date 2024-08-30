@@ -1,5 +1,6 @@
 package br.edu.ifpb.pdist_back.controller;
 
+import br.edu.ifpb.pdist_back.dto.PostDTO;
 import br.edu.ifpb.pdist_back.model.Post;
 import br.edu.ifpb.pdist_back.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,7 +61,7 @@ public class PostController {
     }
 
     @PostMapping(path = "/{id}/new")
-    public ResponseEntity<?> addPost(@PathVariable String id, @RequestBody Post post) {
+    public ResponseEntity<?> addPost(@PathVariable String id, @RequestBody PostDTO post) {
         try {
             return postService.addPost(id, post);
         } catch (Exception e) {

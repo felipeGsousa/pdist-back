@@ -1,13 +1,31 @@
 package br.edu.ifpb.pdist_back.dto;
 
-import org.springframework.web.multipart.MultipartFile;
+import br.edu.ifpb.pdist_back.model.Post;
+
+import java.util.Date;
+import java.util.List;
 
 public class ForumDTO {
+    private String id;
     private String userId;
     private String description;
     private String name;
+    private Date created;
     private String topic;
     private String banner;
+    private List<PostDTO> posts;
+    private List<String> users;
+
+    public ForumDTO() {
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getUserId() {
         return userId;
@@ -33,6 +51,14 @@ public class ForumDTO {
         this.name = name;
     }
 
+    public Date getCreated() {
+        return created;
+    }
+
+    public void setCreated(Date created) {
+        this.created = created;
+    }
+
     public String getTopic() {
         return topic;
     }
@@ -47,5 +73,21 @@ public class ForumDTO {
 
     public void setBanner(String banner) {
         this.banner = banner;
+    }
+
+    public List<PostDTO> getPosts() {
+        return posts;
+    }
+
+    public void setPosts(List<PostDTO> posts) {
+        this.posts = posts;
+    }
+
+    public List<String> getUsers() {
+        return users;
+    }
+
+    public void setUsers(List<String> users) {
+        this.users = users;
     }
 }
