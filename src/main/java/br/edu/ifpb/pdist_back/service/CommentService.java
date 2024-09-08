@@ -1,6 +1,7 @@
 package br.edu.ifpb.pdist_back.service;
 
 import br.edu.ifpb.pdist_back.controller.CommentImpl;
+import br.edu.ifpb.pdist_back.dto.CommentDTO;
 import br.edu.ifpb.pdist_back.interfaces.CommentInterface;
 import br.edu.ifpb.pdist_back.model.Comment;
 import br.edu.ifpb.pdist_back.model.Post;
@@ -11,10 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class CommentService {
@@ -61,7 +59,7 @@ public class CommentService {
         return new ResponseEntity<>("Comment not found", HttpStatus.NOT_FOUND);
     }
 
-    public ResponseEntity<?> addComment(String postId, Comment commentData) {
+    public ResponseEntity<?> addComment(String postId, CommentDTO commentData) {
         Optional<Post> post = postRepository.findById(postId);
         if (post.isPresent()) {
             Comment comment = new Comment();
@@ -71,6 +69,8 @@ public class CommentService {
             comment.setUserId(commentData.getUserId());
             comment.setDate(new Date());
             comment.setLikes(0L);
+            comment.setUserName(commentData.getUserName());
+            comment.setUserPhoto(comment.getUserPhoto());
 
             Comment savedComment = commentRepository.save(comment);
 
@@ -82,9 +82,26 @@ public class CommentService {
         return new ResponseEntity<>("Post not found", HttpStatus.NOT_FOUND);
     }
 
-    //Para usuário e File: File referencia ID do User, Forum comment e post
-    // referenciam ID do User, User não referencia nada.
+    public void likeComment(HashMap<String, Object> likeAct){
+        Optional<Comment> commentOpt = commentRepository.findById((String) likeAct.get("id"));
 
-    //Criar interface para que outros serviços possam lidar com a
-    // deleção de comentários e posts
+        if (commentOpt.isPresent()){
+            Comment comment = commentOpt.get();
+
+            if ((boolean)likeAct.get("addLike")) {
+                comment.addLike();
+            }
+            if ((boolean)likeAct.get("subLike")) {
+                comment.subLike();
+            }
+            if ((boolean)likeAct.get("addDislike")) {
+                comment.addDislike();
+            }
+            if ((boolean)likeAct.get("subDislike")) {
+                comment.subDislike();
+            }
+
+            commentRepository.save(comment);
+        }
+    }
 }

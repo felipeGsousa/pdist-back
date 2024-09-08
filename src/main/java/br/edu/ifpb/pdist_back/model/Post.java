@@ -16,7 +16,7 @@ public class Post {
     private Date date;
     private Long likes;
     private Long dislikes;
-    private String user;
+    private String forumId;
     private String userId;
     private String fileId;
     @DBRef
@@ -69,7 +69,7 @@ public class Post {
         this.likes = likes;
     }
 
-    public Long getDislike() {
+    public Long getDislikes() {
         return dislikes;
     }
 
@@ -81,16 +81,16 @@ public class Post {
         this.dislikes -= 1;
     }
 
-    public void setDislike(Long dislikes) {
+    public void setDislikes(Long dislikes) {
         this.dislikes = dislikes;
     }
 
-    public String getUser() {
-        return user;
+    public String getForumId() {
+        return forumId;
     }
 
-    public void setUser(String user) {
-        this.user = user;
+    public void setForumId(String forumId) {
+        this.forumId = forumId;
     }
 
     public String getUserId() {

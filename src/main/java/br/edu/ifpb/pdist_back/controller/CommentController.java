@@ -1,5 +1,6 @@
 package br.edu.ifpb.pdist_back.controller;
 
+import br.edu.ifpb.pdist_back.dto.CommentDTO;
 import br.edu.ifpb.pdist_back.model.Comment;
 import br.edu.ifpb.pdist_back.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,7 +61,7 @@ public class CommentController {
     //Classes DTO para criação e edição dos dados. DTO de post recebe um
     // multipartFIle que será utilizado para chamar o serviço de arquivos através de mensageria
     @PostMapping(path = "/{id}/new")
-    public ResponseEntity<?> addComment(@PathVariable String id, Comment comment) {
+    public ResponseEntity<?> addComment(@PathVariable String id, CommentDTO comment) {
         try {
             return commentService.addComment(id, comment);
         } catch (Exception e) {

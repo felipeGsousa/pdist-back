@@ -13,7 +13,8 @@ public class Comment {
     private String id;
     private Long likes;
     private Long dislikes;
-    private String user;
+    private String userName;
+    private String userPhoto;
     private String userId;
     private String data;
     @DBRef
@@ -59,12 +60,21 @@ public class Comment {
         this.dislikes = dislikes;
     }
 
-    public String getUser() {
-        return user;
+
+    public String getUserName() {
+        return userName;
     }
 
-    public void setUser(String user) {
-        this.user = user;
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getUserPhoto() {
+        return userPhoto;
+    }
+
+    public void setUserPhoto(String userPhoto) {
+        this.userPhoto = userPhoto;
     }
 
     public String getUserId() {

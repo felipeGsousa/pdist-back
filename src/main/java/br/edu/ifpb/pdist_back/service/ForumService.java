@@ -78,6 +78,24 @@ public class ForumService {
         return new ResponseEntity<>("Forum not found", HttpStatus.NOT_FOUND);
     }
 
+    public ResponseEntity<?> joinForum(String forumId, String userId) {
+        Optional<Forum> forum = forumRepository.findById(forumId);
+        if (forum.isPresent()) {
+            forum.get().addUser(userId);
+            return new ResponseEntity<>("User joined", HttpStatus.OK);
+        }
+        return new ResponseEntity<>("Forum not found", HttpStatus.NOT_FOUND);
+    }
+
+    public ResponseEntity<?> leaveForum(String forumId, String userId) {
+        Optional<Forum> forum = forumRepository.findById(forumId);
+        if (forum.isPresent()) {
+            forum.get().removeUser(userId);
+            return new ResponseEntity<>("User leave", HttpStatus.OK);
+        }
+        return new ResponseEntity<>("Forum not found", HttpStatus.NOT_FOUND);
+    }
+
     public ResponseEntity<?> addForum(ForumDTO forumData) {
         Forum forum = new Forum();
         byte[] banner = new byte[0];
@@ -124,7 +142,6 @@ public class ForumService {
             ForumDTO forumDTO = new ForumDTO();
 
             forumDTO.setId(forum.getId());
-            forumDTO.setPosts(postsToDTO(forum.getPosts()));
             forumDTO.setUsers(forum.getUsers());
             forumDTO.setUserId(forum.getUserId());
             forumDTO.setCreated(forum.getCreated());

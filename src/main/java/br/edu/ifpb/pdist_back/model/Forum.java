@@ -108,4 +108,7 @@ public class Forum {
     public void addUser(String user){
         this.users.add(user);
     }
+    public void removeUser(String user){
+        this.users.remove(user);
+    }
 }

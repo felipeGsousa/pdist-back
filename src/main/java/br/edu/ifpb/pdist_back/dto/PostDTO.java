@@ -1,8 +1,10 @@
 package br.edu.ifpb.pdist_back.dto;
 
+import br.edu.ifpb.pdist_back.model.Comment;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Date;
+import java.util.List;
 
 public class PostDTO {
     private String id;
@@ -14,8 +16,8 @@ public class PostDTO {
     private String user;
     private String userId;
     private String fileId;
-    private String fileType;
-    private String file;
+    private FileDTO file;
+    private List<Comment> comments;
 
     public PostDTO() {
     }
@@ -92,20 +94,19 @@ public class PostDTO {
         this.fileId = fileId;
     }
 
-    public String getFileType() {
-        return fileType;
-    }
-
-    public void setFileType(String fileType) {
-        this.fileType = fileType;
-    }
-
-    public String getFile() {
+    public FileDTO getFile() {
         return file;
     }
 
-    public void setFile(String file) {
+    public void setFile(FileDTO file) {
         this.file = file;
     }
 
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
+    }
 }

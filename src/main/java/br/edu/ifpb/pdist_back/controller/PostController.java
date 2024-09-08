@@ -1,5 +1,6 @@
 package br.edu.ifpb.pdist_back.controller;
 
+import br.edu.ifpb.pdist_back.dto.PostCreateDTO;
 import br.edu.ifpb.pdist_back.dto.PostDTO;
 import br.edu.ifpb.pdist_back.model.Post;
 import br.edu.ifpb.pdist_back.service.PostService;
@@ -33,6 +34,15 @@ public class PostController {
         }
     }
 
+    @GetMapping(path = "/{id}/forum_posts")
+    public ResponseEntity<?> getForumPosts(@PathVariable String id) {
+        try {
+            return postService.getForumPosts(id);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     @GetMapping(path = "/{id}/user_posts")
     public ResponseEntity<?> getUserPosts(@PathVariable String id) {
         try {
@@ -52,7 +62,7 @@ public class PostController {
     }
 
     @PutMapping(path = "/{id}")
-    public ResponseEntity<?> updatePost(@PathVariable String id, Post post) {
+    public ResponseEntity<?> updatePost(@PathVariable String id, PostDTO post) {
         try {
             return postService.updatePost(id, post);
         } catch (Exception e) {
@@ -61,7 +71,7 @@ public class PostController {
     }
 
     @PostMapping(path = "/{id}/new")
-    public ResponseEntity<?> addPost(@PathVariable String id, @RequestBody PostDTO post) {
+    public ResponseEntity<?> addPost(@PathVariable String id, @RequestBody PostCreateDTO post) {
         try {
             return postService.addPost(id, post);
         } catch (Exception e) {

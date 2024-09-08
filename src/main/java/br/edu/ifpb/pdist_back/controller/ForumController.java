@@ -68,4 +68,22 @@ public class ForumController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @PostMapping(path = "/join/{id}")
+    public ResponseEntity<?> joinForum(@PathVariable String id, @RequestBody String userId) {
+        try {
+            return forumService.joinForum(id, userId);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PostMapping(path = "/leave/{id}")
+    public ResponseEntity<?> leaveForum(@PathVariable String id, @RequestBody String userId) {
+        try {
+            return forumService.leaveForum(id, userId);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }
