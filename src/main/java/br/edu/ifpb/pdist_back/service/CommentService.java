@@ -64,7 +64,6 @@ public class CommentService {
         if (post.isPresent()) {
             Comment comment = new Comment();
 
-            comment.setComments(new ArrayList<>());
             comment.setData(commentData.getData());
             comment.setUserId(commentData.getUserId());
             comment.setDate(new Date());
