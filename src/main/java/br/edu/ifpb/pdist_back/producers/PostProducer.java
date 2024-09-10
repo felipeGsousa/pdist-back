@@ -14,7 +14,7 @@ public class PostProducer {
     final RabbitTemplate rabbitTemplate;
     public PostProducer(RabbitTemplate rabbitTemplate) {
         this.rabbitTemplate = rabbitTemplate;
-        this.rabbitTemplate.setReplyTimeout(60000);
+        this.rabbitTemplate.setReplyTimeout(1000000);
     }
 
     @Value(value = "${broker.queue.post.file}")
@@ -25,6 +25,7 @@ public class PostProducer {
 
     public String storeFile(FileDTO fileDTO){
         String fileId = (String) rabbitTemplate.convertSendAndReceive("", postFileRoutingKey, fileDTO);
+        System.out.println(fileId);
         return fileId;
     }
 
