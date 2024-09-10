@@ -110,8 +110,11 @@ public class PostService {
                 fileDTO.setContentType(postData.getFile().getContentType());
                 fileDTO.setFilename(postData.getFile().getFilename());
                 fileDTO.setUserId(postData.getUserId());
-
-                post.setFileId(postProducer.storeFile(fileDTO));
+                try {
+                    post.setFileId(postProducer.storeFile(fileDTO));
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                }
             }
 
             post.setDislikes(0L);
@@ -150,12 +153,16 @@ public class PostService {
         postDTO.setComments(post.getComments());
 
         if (!post.getFileId().isEmpty()) {
-            FileDTO file = postProducer.getFile(post.getFileId());
-            if (file != null) {
-                postDTO.setFile(file);
-            } else {
-                post.setFileId("");
-                postRepository.save(post);
+            try {
+                FileDTO file = postProducer.getFile(post.getFileId());
+                if (file != null) {
+                    postDTO.setFile(file);
+                } else {
+                    post.setFileId("");
+                    postRepository.save(post);
+                }
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
             }
         }
         postDTO.setFileId(post.getFileId());

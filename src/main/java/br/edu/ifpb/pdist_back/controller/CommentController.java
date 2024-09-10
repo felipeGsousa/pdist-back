@@ -68,4 +68,13 @@ public class CommentController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @PostMapping(path = "/{id}/newTo")
+    public ResponseEntity<?> addCommentTo(@PathVariable String id, CommentDTO comment) {
+        try {
+            return commentService.addCommentTo(id, comment);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }

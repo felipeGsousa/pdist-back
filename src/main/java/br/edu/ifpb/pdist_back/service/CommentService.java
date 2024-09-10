@@ -68,13 +68,32 @@ public class CommentService {
             comment.setUserId(commentData.getUserId());
             comment.setDate(new Date());
             comment.setLikes(0L);
-            comment.setUserName(commentData.getUserName());
-            comment.setUserPhoto(comment.getUserPhoto());
+            comment.setComments(new ArrayList<>());
 
             Comment savedComment = commentRepository.save(comment);
 
             post.get().addComment(savedComment);
             postRepository.save(post.get());
+
+            return new ResponseEntity<>("Comment has been created", HttpStatus.OK);
+        }
+        return new ResponseEntity<>("Post not found", HttpStatus.NOT_FOUND);
+    }
+
+    public ResponseEntity<?> addCommentTo(String commentId, CommentDTO commentData) {
+        Optional<Comment> commentP = commentRepository.findById(commentId);
+        if (commentP.isPresent()) {
+            Comment comment = new Comment();
+
+            comment.setData(commentData.getData());
+            comment.setUserId(commentData.getUserId());
+            comment.setDate(new Date());
+            comment.setLikes(0L);
+
+            Comment savedComment = commentRepository.save(comment);
+
+            commentP.get().addComment(savedComment);
+            commentRepository.save(commentP.get());
 
             return new ResponseEntity<>("Comment has been created", HttpStatus.OK);
         }
