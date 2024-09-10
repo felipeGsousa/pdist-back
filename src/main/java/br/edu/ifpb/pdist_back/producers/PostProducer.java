@@ -14,7 +14,7 @@ public class PostProducer {
     final RabbitTemplate rabbitTemplate;
     public PostProducer(RabbitTemplate rabbitTemplate) {
         this.rabbitTemplate = rabbitTemplate;
-        this.rabbitTemplate.setReplyTimeout(1000000);
+        this.rabbitTemplate.setReplyTimeout(6000);
     }
 
     @Value(value = "${broker.queue.post.file}")
