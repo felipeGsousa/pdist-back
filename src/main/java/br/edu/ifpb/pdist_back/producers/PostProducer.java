@@ -31,7 +31,7 @@ public class PostProducer {
     public FileDTO getFile(String fileId){
         Map<String,Object> fileMapDto = (Map<String, Object>) rabbitTemplate.convertSendAndReceive("", fileRoutingKey, fileId);
         FileDTO fileDTO = new FileDTO();
-        if (fileMapDto != null && fileMapDto.get("response").equals(true)) {
+        if (fileMapDto != null) {
             System.out.println();
             fileDTO.setId((String) fileMapDto.get("id"));
             fileDTO.setUserId((String) fileMapDto.get("userId"));
