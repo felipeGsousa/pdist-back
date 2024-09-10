@@ -112,7 +112,6 @@ public class PostService {
                 fileDTO.setUserId(postData.getUserId());
 
                 String id = postProducer.storeFile(fileDTO);
-                System.out.println(id);
                 post.setFileId(id);
 
             }
@@ -147,13 +146,13 @@ public class PostService {
 
         postDTO.setId(post.getId());
         postDTO.setDate(post.getDate());
+        postDTO.setTitle(post.getTitle());
         postDTO.setContent(post.getContent());
         postDTO.setDislikes(post.getDislikes());
         postDTO.setLikes(post.getLikes());
         postDTO.setComments(post.getComments());
 
         if (!post.getFileId().isEmpty()) {
-
             FileDTO file = postProducer.getFile(post.getFileId());
             if (file != null) {
                 postDTO.setFile(file);

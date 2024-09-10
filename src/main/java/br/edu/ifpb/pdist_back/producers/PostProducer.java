@@ -14,7 +14,7 @@ public class PostProducer {
     final RabbitTemplate rabbitTemplate;
     public PostProducer(RabbitTemplate rabbitTemplate) {
         this.rabbitTemplate = rabbitTemplate;
-        this.rabbitTemplate.setReplyTimeout(6000);
+        this.rabbitTemplate.setReplyTimeout(600000);
     }
 
     @Value(value = "${broker.queue.post.file}")
@@ -33,7 +33,6 @@ public class PostProducer {
         Map<String,Object> fileMapDto = (Map<String, Object>) rabbitTemplate.convertSendAndReceive("", fileRoutingKey, fileId);
         FileDTO fileDTO = new FileDTO();
         if (fileMapDto != null) {
-            System.out.println();
             fileDTO.setId((String) fileMapDto.get("id"));
             fileDTO.setUserId((String) fileMapDto.get("userId"));
             String data = (String) fileMapDto.get("data");
