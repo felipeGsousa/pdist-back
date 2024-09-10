@@ -111,7 +111,9 @@ public class PostService {
                 fileDTO.setFilename(postData.getFile().getFilename());
                 fileDTO.setUserId(postData.getUserId());
 
-                post.setFileId(postProducer.storeFile(fileDTO));
+                String id = postProducer.storeFile(fileDTO);
+                System.out.println(id);
+                post.setFileId(id);
 
             }
 
