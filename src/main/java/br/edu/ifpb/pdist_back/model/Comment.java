@@ -33,11 +33,11 @@ public class Comment {
     }
 
     public void addLike() {
-        this.likes += 1;
+        this.likes += 1L;
     }
 
     public void subLike() {
-        this.likes -= 1;
+        this.likes -= 1L;
     }
 
     public void setLikes(Long likes) {
@@ -49,11 +49,11 @@ public class Comment {
     }
 
     public void addDislike() {
-        this.dislikes += 1;
+        this.dislikes += 1L;
     }
 
     public void subDislike() {
-        this.dislikes -= 1;
+        this.dislikes -= 1L;
     }
 
     public void setDislikes(Long dislikes) {
