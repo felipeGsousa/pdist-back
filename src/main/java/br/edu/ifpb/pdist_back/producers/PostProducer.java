@@ -25,7 +25,6 @@ public class PostProducer {
 
     public String storeFile(FileDTO fileDTO){
         String fileId = (String) rabbitTemplate.convertSendAndReceive("", postFileRoutingKey, fileDTO);
-        System.out.println(fileId);
         return fileId;
     }
 

@@ -61,7 +61,7 @@ public class CommentController {
     //Classes DTO para criação e edição dos dados. DTO de post recebe um
     // multipartFIle que será utilizado para chamar o serviço de arquivos através de mensageria
     @PostMapping(path = "/{id}/new")
-    public ResponseEntity<?> addComment(@PathVariable String id, CommentDTO comment) {
+    public ResponseEntity<?> addComment(@PathVariable String id, @RequestBody CommentDTO comment) {
         try {
             return commentService.addComment(id, comment);
         } catch (Exception e) {
@@ -70,7 +70,7 @@ public class CommentController {
     }
 
     @PostMapping(path = "/{id}/newTo")
-    public ResponseEntity<?> addCommentTo(@PathVariable String id, CommentDTO comment) {
+    public ResponseEntity<?> addCommentTo(@PathVariable String id, @RequestBody CommentDTO comment) {
         try {
             return commentService.addCommentTo(id, comment);
         } catch (Exception e) {

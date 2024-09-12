@@ -9,6 +9,7 @@ public class CommentDTO {
     private Long likes;
     private Long dislikes;
     private String userName;
+    private String userEmail;
     private String userPhoto;
     private String userId;
     private String data;
@@ -88,5 +89,13 @@ public class CommentDTO {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public String getUserEmail() {
+        return userEmail;
+    }
+
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
     }
 }

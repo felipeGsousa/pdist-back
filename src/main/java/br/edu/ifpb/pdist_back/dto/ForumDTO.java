@@ -8,6 +8,9 @@ import java.util.List;
 public class ForumDTO {
     private String id;
     private String userId;
+    private String userName;
+    private String userEmail;
+    private String userPhoto;
     private String description;
     private String name;
     private Date created;
@@ -89,5 +92,29 @@ public class ForumDTO {
 
     public void setUsers(List<String> users) {
         this.users = users;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getUserEmail() {
+        return userEmail;
+    }
+
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
+    }
+
+    public String getUserPhoto() {
+        return userPhoto;
+    }
+
+    public void setUserPhoto(String userPhoto) {
+        this.userPhoto = userPhoto;
     }
 }

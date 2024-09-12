@@ -68,6 +68,7 @@ public class CommentService {
             comment.setUserId(commentData.getUserId());
             comment.setDate(new Date());
             comment.setLikes(0L);
+            comment.setDislikes(0L);
             comment.setComments(new ArrayList<>());
 
             Comment savedComment = commentRepository.save(comment);
@@ -87,8 +88,10 @@ public class CommentService {
 
             comment.setData(commentData.getData());
             comment.setUserId(commentData.getUserId());
+            comment.setComments(new ArrayList<>());
             comment.setDate(new Date());
             comment.setLikes(0L);
+            comment.setDislikes(0L);
 
             Comment savedComment = commentRepository.save(comment);
 

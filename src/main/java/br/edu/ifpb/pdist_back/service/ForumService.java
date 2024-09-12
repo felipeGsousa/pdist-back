@@ -9,6 +9,7 @@ import br.edu.ifpb.pdist_back.model.Post;
 import br.edu.ifpb.pdist_back.repository.ForumRepository;
 import br.edu.ifpb.pdist_back.repository.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -24,6 +25,8 @@ public class ForumService {
     private PostRepository postRepository;
     @Autowired
     private CommentImpl commentImpl;
+    @Autowired
+    private RedisTemplate<String, Object> redisTemplate;
 
     public ResponseEntity<?> getAllForums() {
         List<Forum> forums = forumRepository.findAll();
@@ -121,7 +124,7 @@ public class ForumService {
     public ForumDTO forumToDTO(Forum forum) {
         ForumDTO forumDTO = new ForumDTO();
         forumDTO.setId(forum.getId());
-        forumDTO.setPosts(postsToDTO(forum.getPosts()));
+
         forumDTO.setUsers(forum.getUsers());
         forumDTO.setUserId(forum.getUserId());
         forumDTO.setCreated(forum.getCreated());
@@ -133,6 +136,15 @@ public class ForumService {
         forumDTO.setDescription(forum.getDescription());
         forumDTO.setName(forum.getName());
         forumDTO.setTopic(forum.getTopic());
+
+        Map<Object, Object> map = redisTemplate.opsForHash().entries("user:"+forum.getUserId());
+
+        if (!map.isEmpty()) {
+            forumDTO.setUserName((String) map.get("name"));
+            forumDTO.setUserPhoto((String) map.get("profilePicture"));
+            forumDTO.setUserEmail((String) map.get("email"));
+        }
+
         return forumDTO;
     }
     public List<ForumDTO> forumsToDTO(List<Forum> forums) {
@@ -141,16 +153,8 @@ public class ForumService {
         for (Forum forum: forums) {
             ForumDTO forumDTO = new ForumDTO();
 
-            forumDTO.setId(forum.getId());
-            forumDTO.setUsers(forum.getUsers());
-            forumDTO.setUserId(forum.getUserId());
-            forumDTO.setCreated(forum.getCreated());
-            if (forum.getBanner() != null && forum.getBanner().length > 0) {
-                forumDTO.setBanner(Base64.getEncoder().encodeToString(forum.getBanner()));
-            }
-            forumDTO.setDescription(forum.getDescription());
-            forumDTO.setName(forum.getName());
-            forumDTO.setTopic(forum.getTopic());
+            forumDTO = forumToDTO(forum);
+
             forumDTOS.add(forumDTO);
         }
         return forumDTOS;
@@ -166,6 +170,7 @@ public class ForumService {
             postDTO.setContent(post.getContent());
             postDTO.setDislikes(postDTO.getDislikes());
             postDTO.setLikes(postDTO.getLikes());
+
 
             postDTOS.add(postDTO);
         }

@@ -17,7 +17,10 @@ public class PostDTO {
     private String userId;
     private String fileId;
     private FileDTO file;
-    private List<Comment> comments;
+    private String userName;
+    private String userEmail;
+    private String userPhoto;
+    private List<CommentDTO> comments;
 
     public PostDTO() {
     }
@@ -102,11 +105,35 @@ public class PostDTO {
         this.file = file;
     }
 
-    public List<Comment> getComments() {
+    public List<CommentDTO> getComments() {
         return comments;
     }
 
-    public void setComments(List<Comment> comments) {
+    public void setComments(List<CommentDTO> comments) {
         this.comments = comments;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getUserEmail() {
+        return userEmail;
+    }
+
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
+    }
+
+    public String getUserPhoto() {
+        return userPhoto;
+    }
+
+    public void setUserPhoto(String userPhoto) {
+        this.userPhoto = userPhoto;
     }
 }
