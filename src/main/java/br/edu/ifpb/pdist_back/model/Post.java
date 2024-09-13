@@ -62,7 +62,9 @@ public class Post {
     }
 
     public void subLike() {
-        this.likes -= 1L;
+        if (this.likes > 0L) {
+            this.likes -= 1L;
+        }
     }
 
     public void setLikes(Long likes) {
@@ -78,7 +80,9 @@ public class Post {
     }
 
     public void subDislike() {
-        this.dislikes -= 1L;
+        if (this.dislikes > 0L) {
+            this.dislikes -= 1L;
+        }
     }
 
     public void setDislikes(Long dislikes) {

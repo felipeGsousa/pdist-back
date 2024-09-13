@@ -188,9 +188,10 @@ public class PostService {
         return postDTO;
     }
 
-    public void likePost(HashMap<String, Object> likeAct) {
+    public HashMap<String, Long> likePost(HashMap<String, Object> likeAct) {
         Optional<Post> postOpt = postRepository.findById((String) likeAct.get("id"));
-
+        HashMap<String, Long> likesDislikes = new HashMap<>();
+        Post savedPost = new Post();
         if (postOpt.isPresent()){
             Post post = postOpt.get();
 
@@ -207,8 +208,13 @@ public class PostService {
                 post.subDislike();
             }
 
-            postRepository.save(post);
+            savedPost = postRepository.save(post);
+
         }
+
+        likesDislikes.put("likes", savedPost.getLikes());
+        likesDislikes.put("dislikes", savedPost.getDislikes());
+        return likesDislikes;
     }
 
     public List<CommentDTO> commentToDTO(List<Comment> comments) {

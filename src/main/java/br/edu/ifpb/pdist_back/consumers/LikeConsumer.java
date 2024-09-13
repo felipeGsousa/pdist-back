@@ -19,12 +19,12 @@ public class LikeConsumer {
     private CommentService commentService;
 
     @RabbitListener(queues = "${broker.queue.post.like}")
-    private void likePost(@Payload HashMap<String, Object> likeAct){
-        postService.likePost(likeAct);
+    private HashMap<String, Long> likePost(@Payload HashMap<String, Object> likeAct){
+        return postService.likePost(likeAct);
     }
 
     @RabbitListener(queues = "${broker.queue.comment.like}")
-    private void likeComments(@Payload HashMap<String, Object> likeAct){
-        commentService.likeComment(likeAct);
+    private HashMap<String, Long> likeComments(@Payload HashMap<String, Object> likeAct){
+        return commentService.likeComment(likeAct);
     }
 }

@@ -103,9 +103,10 @@ public class CommentService {
         return new ResponseEntity<>("Post not found", HttpStatus.NOT_FOUND);
     }
 
-    public void likeComment(HashMap<String, Object> likeAct){
+    public HashMap<String, Long> likeComment(HashMap<String, Object> likeAct){
         Optional<Comment> commentOpt = commentRepository.findById((String) likeAct.get("id"));
-
+        HashMap<String, Long> likesDislikes = new HashMap<>();
+        Comment savedComment = new Comment();
         if (commentOpt.isPresent()){
             Comment comment = commentOpt.get();
 
@@ -122,7 +123,11 @@ public class CommentService {
                 comment.subDislike();
             }
 
-            commentRepository.save(comment);
+            savedComment = commentRepository.save(comment);
         }
+        likesDislikes.put("likes", savedComment.getLikes());
+        likesDislikes.put("dislikes", savedComment.getDislikes());
+
+        return likesDislikes;
     }
 }
