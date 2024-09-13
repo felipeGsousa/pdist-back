@@ -64,6 +64,8 @@ public class Post {
     public void subLike() {
         if (this.likes > 0L) {
             this.likes -= 1L;
+        } else {
+            this.likes = 0L;
         }
     }
 
@@ -82,6 +84,8 @@ public class Post {
     public void subDislike() {
         if (this.dislikes > 0L) {
             this.dislikes -= 1L;
+        } else {
+            this.dislikes = 0L;
         }
     }
 
