@@ -104,7 +104,6 @@ public class CommentService {
     }
 
     public HashMap<String, Long> likeComment(HashMap<String, Object> likeAct){
-        System.out.println(likeAct.get("id"));
         Optional<Comment> commentOpt = commentRepository.findById((String) likeAct.get("id"));
         HashMap<String, Long> likesDislikes = new HashMap<>();
         Comment savedComment = new Comment();

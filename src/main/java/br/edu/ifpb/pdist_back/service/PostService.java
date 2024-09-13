@@ -148,8 +148,9 @@ public class PostService {
         postDTO.setContent(post.getContent());
         postDTO.setDislikes(post.getDislikes());
         postDTO.setLikes(post.getLikes());
+        postDTO.setUserId(post.getUserId());
 
-        Map<Object, Object> map = redisTemplate.opsForHash().entries("user:"+postDTO.getUserId());
+        Map<Object, Object> map = redisTemplate.opsForHash().entries("user:"+post.getUserId());
 
         if (!map.isEmpty()) {
             postDTO.setUserName((String) map.get("name"));
@@ -214,6 +215,7 @@ public class PostService {
 
         likesDislikes.put("likes", savedPost.getLikes());
         likesDislikes.put("dislikes", savedPost.getDislikes());
+
         return likesDislikes;
     }
 
@@ -229,7 +231,7 @@ public class PostService {
             commentDTO.setDislikes(comment.getDislikes());
             commentDTO.setUserId(comment.getUserId());
 
-            Map<Object, Object> map = redisTemplate.opsForHash().entries("user:"+commentDTO.getUserId());
+            Map<Object, Object> map = redisTemplate.opsForHash().entries("user:"+comment.getUserId());
 
             if (!map.isEmpty()) {
                 commentDTO.setUserName((String) map.get("name"));
