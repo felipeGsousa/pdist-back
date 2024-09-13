@@ -18,12 +18,12 @@ public class LikeConsumer {
     @Autowired
     private CommentService commentService;
 
-    @RabbitListener(queues = "${broker.queue.post.like}")
+    @RabbitListener(queues = "${broker.queue.post.like}", containerFactory = "myRabbitListenerContainerFactory", concurrency = "15-40")
     private HashMap<String, Long> likePost(@Payload HashMap<String, Object> likeAct){
         return postService.likePost(likeAct);
     }
 
-    @RabbitListener(queues = "${broker.queue.comment.like}")
+    @RabbitListener(queues = "${broker.queue.comment.like}", containerFactory = "myRabbitListenerContainerFactory", concurrency = "15-40")
     private HashMap<String, Long> likeComments(@Payload HashMap<String, Object> likeAct){
         return commentService.likeComment(likeAct);
     }
