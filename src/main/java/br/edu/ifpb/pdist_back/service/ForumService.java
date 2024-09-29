@@ -85,7 +85,8 @@ public class ForumService {
         Optional<Forum> forum = forumRepository.findById(forumId);
         if (forum.isPresent()) {
             forum.get().addUser(userId);
-            return new ResponseEntity<>("User joined", HttpStatus.OK);
+            Forum saved = forumRepository.save(forum.get());
+            return new ResponseEntity<>(saved, HttpStatus.OK);
         }
         return new ResponseEntity<>("Forum not found", HttpStatus.NOT_FOUND);
     }
@@ -94,7 +95,8 @@ public class ForumService {
         Optional<Forum> forum = forumRepository.findById(forumId);
         if (forum.isPresent()) {
             forum.get().removeUser(userId);
-            return new ResponseEntity<>("User leave", HttpStatus.OK);
+            Forum saved = forumRepository.save(forum.get());
+            return new ResponseEntity<>(saved, HttpStatus.OK);
         }
         return new ResponseEntity<>("Forum not found", HttpStatus.NOT_FOUND);
     }

@@ -69,7 +69,7 @@ public class ForumController {
         }
     }
 
-    @PostMapping(path = "/join/{id}")
+    @PutMapping(path = "/join/{id}")
     public ResponseEntity<?> joinForum(@PathVariable String id, @RequestBody String userId) {
         try {
             return forumService.joinForum(id, userId);
@@ -78,7 +78,7 @@ public class ForumController {
         }
     }
 
-    @PostMapping(path = "/leave/{id}")
+    @PutMapping(path = "/leave/{id}")
     public ResponseEntity<?> leaveForum(@PathVariable String id, @RequestBody String userId) {
         try {
             return forumService.leaveForum(id, userId);
