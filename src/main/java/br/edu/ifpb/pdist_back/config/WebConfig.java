@@ -15,7 +15,8 @@ public class WebConfig implements WebMvcConfigurer{
         registry.addMapping("/**")
                 .allowedOrigins("http://localhost:4200/","https://pdist-front.vercel.app/", "https://pdist-front-felipes-projects-ed3c083c.vercel.app/", "https://pdist-front-git-main-felipes-projects-ed3c083c.vercel.app/") // Substitua pela URL do seu frontend
                 .allowedMethods("GET", "POST", "PUT", "DELETE")
-                .allowedHeaders("*");
+                .allowedHeaders("*")
+                .allowCredentials(true);
     }
     @Bean
     public WebMvcConfigurer corsConfigurer() {
