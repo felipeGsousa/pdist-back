@@ -15,6 +15,7 @@ public class FileServiceGrpcClient {
 
     public FileServiceGrpcClient() {
         String serverIp = System.getenv("GRPC_SERVER_IP");
+        System.out.println(serverIp);
         ManagedChannel channel = ManagedChannelBuilder.forAddress(serverIp, 50051)
                 .usePlaintext()
                 .build();
