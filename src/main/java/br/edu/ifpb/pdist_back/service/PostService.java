@@ -52,6 +52,8 @@ public class PostService {
     }
 
     public ResponseEntity<?> getForumPosts(String forumId){
+        String serverIp = System.getenv("GRPC_SERVER_IP");
+        System.out.println(serverIp);
         List<Post> posts = postRepository.findByForumId(forumId);
         List<PostDTO> postDTOS = postsToDTO(posts);
         return new ResponseEntity<>(postDTOS, HttpStatus.OK);
