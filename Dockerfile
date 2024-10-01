@@ -23,8 +23,7 @@ COPY --from=build /app/target/*.jar app.jar
 COPY file-grpc-service-1.0-SNAPSHOT.jar grpc-service.jar
 
 # Exponha as portas que os serviços irão escutar
-EXPOSE 8082
-EXPOSE 50051
+EXPOSE 8080
 
 # Comando para iniciar o aplicativo Spring Boot e o serviço gRPC
 ENTRYPOINT ["sh", "-c", "java -jar app.jar & java -jar grpc-service.jar"]
