@@ -52,8 +52,6 @@ public class PostService {
     }
 
     public ResponseEntity<?> getForumPosts(String forumId){
-        String serverIp = System.getenv("GRPC_SERVER_IP");
-        System.out.println(serverIp);
         List<Post> posts = postRepository.findByForumId(forumId);
         List<PostDTO> postDTOS = postsToDTO(posts);
         return new ResponseEntity<>(postDTOS, HttpStatus.OK);
@@ -154,14 +152,14 @@ public class PostService {
         postDTO.setLikes(post.getLikes());
         postDTO.setUserId(post.getUserId());
 
-        Map<Object, Object> map = redisTemplate.opsForHash().entries("user:"+post.getUserId());
+        /*Map<Object, Object> map = redisTemplate.opsForHash().entries("user:"+post.getUserId());
 
         if (!map.isEmpty()) {
             postDTO.setUserName((String) map.get("name"));
             postDTO.setUserPhoto((String) map.get("profilePicture"));
             postDTO.setUserEmail((String) map.get("email"));
         }
-
+        */
 
         if (!post.getComments().isEmpty()) {
             List<CommentDTO> comments = commentToDTO(post.getComments());
@@ -173,6 +171,12 @@ public class PostService {
         if (!post.getFileId().isEmpty()) {
             FileDTO file = new FileDTO();
             br.edu.ifpb.pdist_back.grpc.FileDTO fileData = grpcClient.getFileById(post.getFileId());
+            file.setFilename(fileData.getFilename());
+            file.setData(fileData.getData().toByteArray());
+            file.setId(fileData.getId());
+            file.setUserId(fileData.getUserId());
+            file.setContentType(fileData.getContentType());
+            postDTO.setFile(file);
 
             /*Map<Object, Object> hashMap = redisTemplate.opsForHash().entries(post.getFileId());
             //postProducer.getFile(post.getFileId());
@@ -188,12 +192,6 @@ public class PostService {
                 post.setFileId("");
                 postRepository.save(post);
             }*/
-            file.setFilename(fileData.getFilename());
-            file.setData(fileData.getData().toByteArray());
-            file.setId(fileData.getId());
-            file.setUserId(fileData.getUserId());
-            file.setContentType(fileData.getContentType());
-            postDTO.setFile(file);
         }
         postDTO.setFileId(post.getFileId());
 

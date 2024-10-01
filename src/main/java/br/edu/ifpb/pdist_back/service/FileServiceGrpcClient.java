@@ -14,9 +14,7 @@ public class FileServiceGrpcClient {
     private final FileServiceGrpc.FileServiceBlockingStub stub;
 
     public FileServiceGrpcClient() {
-        String serverIp = System.getenv("GRPC_SERVER_IP");
-        System.out.println(serverIp);
-        ManagedChannel channel = ManagedChannelBuilder.forAddress(serverIp, 50051)
+        ManagedChannel channel = ManagedChannelBuilder.forAddress("pdist-grpc-server-production.up.railway.app", 50051)
                 .usePlaintext()
                 .build();
         this.stub = FileServiceGrpc.newBlockingStub(channel);
