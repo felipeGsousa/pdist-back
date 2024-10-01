@@ -17,7 +17,7 @@ FROM openjdk:17-jdk-slim
 WORKDIR /app
 
 # Copie o arquivo JAR do Spring Boot da etapa de construção
-COPY target/*.jar springboot-app.jar
+COPY --from=build /app/target/*.jar app.jar
 
 # Copie o arquivo JAR do serviço gRPC da raiz do projeto
 COPY file-grpc-service-1.0-SNAPSHOT.jar grpc-service.jar
@@ -27,7 +27,7 @@ EXPOSE 8082
 EXPOSE 50051
 
 # Comando para iniciar o aplicativo Spring Boot e o serviço gRPC
-ENTRYPOINT ["sh", "-c", "java -jar springboot-app.jar & java -jar grpc-service.jar"]
+ENTRYPOINT ["sh", "-c", "java -jar app.jar & java -jar grpc-service.jar"]
 
 # Se você decidir usar o NGINX, descomente as seguintes linhas:
 # RUN apt-get update && apt-get install -y nginx
