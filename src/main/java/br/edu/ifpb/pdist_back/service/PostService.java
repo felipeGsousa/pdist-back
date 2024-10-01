@@ -111,7 +111,9 @@ public class PostService {
                 fileDTO.setFilename(postData.getFile().getFilename());
                 fileDTO.setUserId(postData.getUserId());
 
-                String id = postProducer.storeFile(fileDTO);
+                String id = grpcClient.uploadFile(postData.getUserId(), postData.getFile().getFilename(), postData.getFile().getContentType(), fileDTO.getData());
+
+                //String id = postProducer.storeFile(fileDTO);
                 post.setFileId(id);
 
             }
