@@ -34,6 +34,8 @@ public class PostService {
     private PostProducer postProducer;
     @Autowired
     private RedisTemplate<String, Object> redisTemplate;
+    @Autowired
+    private FileServiceGrpcClient grpcClient;
 
     public ResponseEntity<?> getAllPosts() {
         List<Post> posts = postRepository.findAll();
@@ -168,7 +170,9 @@ public class PostService {
 
         if (!post.getFileId().isEmpty()) {
             FileDTO file = new FileDTO();
-            Map<Object, Object> hashMap = redisTemplate.opsForHash().entries(post.getFileId());
+            br.edu.ifpb.pdist_back.grpc.FileDTO fileData = grpcClient.getFileById(post.getFileId());
+
+            /*Map<Object, Object> hashMap = redisTemplate.opsForHash().entries(post.getFileId());
             //postProducer.getFile(post.getFileId());
             if (!hashMap.isEmpty()) {
                 file.setId((String) hashMap.get("id"));
@@ -181,8 +185,13 @@ public class PostService {
             } else {
                 post.setFileId("");
                 postRepository.save(post);
-            }
-
+            }*/
+            file.setFilename(fileData.getFilename());
+            file.setData(fileData.getData().toByteArray());
+            file.setId(fileData.getId());
+            file.setUserId(fileData.getUserId());
+            file.setContentType(fileData.getContentType());
+            postDTO.setFile(file);
         }
         postDTO.setFileId(post.getFileId());
 
